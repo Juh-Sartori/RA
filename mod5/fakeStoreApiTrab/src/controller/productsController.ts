@@ -85,6 +85,7 @@ const insert = async (req: Request, res: Response) => {
   }
 };
 
+//atualiza uma linha (entrada) de acordo com id
 const update = async (req: Request, res: Response) => {
   try {
     const id = req.params.id;
