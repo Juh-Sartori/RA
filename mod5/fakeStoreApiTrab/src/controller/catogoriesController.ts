@@ -4,14 +4,14 @@ import config from "../../knexfile";
 
 const knexInstance = knex(config);
 
-type Categories = {
+type CategoriesType = {
   id?: number;
   name: string;
 };
 
 const index = async (req: Request, res: Response) => {
   try {
-    const category: Categories[] = await knexInstance("categories").select(
+    const category: CategoriesType[] = await knexInstance("categories").select(
       "name"
     );
     //como category eh um array, da para usar o map, eassim cria um novo array
@@ -51,14 +51,15 @@ const insert = async (req: Request, res: Response) => {
 
 const update = async (req: Request, res: Response) => {
   try {
-    const { name } = req.body;
-
+    const nameUrl: string = req.params.name;
+    const nameUpdate = req.body.name;
+    const updateData: CategoriesType = { name: nameUpdate };
     //pesquisa o id da categoria recebido por parametro
     const nameCategory = await knexInstance("categories")
-      .select("name")
-      .where({ name: name }); //onde name tiver essa categoria retorna ai!
+      .update(updateData)
+      .where({ name: nameUrl }); //onde name tiver essa categoria retorna ai!
 
-    if (!nameCategory[0]) {
+    if (!nameCategory) {
       throw new Error("Erro nao achei a categoria.");
     }
 
