@@ -34,10 +34,11 @@ const index = async (req: Request, res: Response, next: NextFunction) => {
 //show: traz uma entrada so de acordo com o id (ou nome, etc)
 const show = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const id = req.params.id;
-    const product = await knexInstance("product").select("*").where({ id });
-    if (!product.length) throw new Error("Esse produto nao existe");
-    res.status(200).json(product[0]);
+    const id = Number(req.params.id);
+
+    const newProductShow = await productService.getProduct(id);
+
+    res.status(200).json(newProductShow);
   } catch (error: any) {
     // res.send(error.message ? { error: error.message } : error);
     next(error);
@@ -77,12 +78,10 @@ const update = async (req: Request, res: Response, next: NextFunction) => {
 
 const remove = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const id = req.params.id;
-    const product = await knexInstance("product").delete().where({ id });
+    const id = Number(req.params.id);
+    const product = await productService.deleteProduct(id);
 
-    if (!product) throw new Error("Esse produto não existe");
-
-    res.status(200).json({ msg: "Produto deletado" });
+    res.status(200).json(product);
   } catch (error: any) {
     next(error);
   }

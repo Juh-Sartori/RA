@@ -24,4 +24,17 @@ const insertProduct = (product: Product) =>
 const updateProduct = (product: Product, id: number) =>
   knexInstance.update(product).into("product").where({ id }); //product eh o nome do meu bd
 
-export default { verifyCategory, insertProduct, updateProduct };
+const showProduct = (id: number) =>
+  knexInstance.select("*").into("product").where({ id }); //esse selct foi feito com base an logica do show
+//knexInstance ja tem suas funcoes dele, nao to pegando do meu controller
+
+const deletProduct = (id: number) =>
+  knexInstance.delete().into("product").where({ id });
+
+export default {
+  verifyCategory,
+  insertProduct,
+  updateProduct,
+  showProduct,
+  deletProduct,
+};
