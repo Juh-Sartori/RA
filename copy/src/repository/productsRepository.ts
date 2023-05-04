@@ -21,7 +21,7 @@ const verifyCategory = (category: string) =>
 const insertProduct = (product: Product) =>
   knexInstance.insert(product).into("product");
 
-const updateProduct = (product: Product) => {
-  knexInstance.update(product).into("product"); //product eh o nome do meu bd
-};
+const updateProduct = (product: Product, id: number) =>
+  knexInstance.update(product).into("product").where({ id }); //product eh o nome do meu bd
+
 export default { verifyCategory, insertProduct, updateProduct };

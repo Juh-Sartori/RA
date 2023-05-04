@@ -28,7 +28,7 @@ const createProduct = async (product: ProductParams) => {
   return insertProduct;
 };
 
-const putProduct = async (product: ProductParams) => {
+const putProduct = async (product: ProductParams, id: number) => {
   const newProductPut = { ...product, ...product.rating };
   delete newProductPut.rating;
   delete newProductPut.category;
@@ -36,10 +36,13 @@ const putProduct = async (product: ProductParams) => {
   const categoryID = await Repository.verifyCategory(product.category!);
 
   if (categoryID.length === 0) throw new Error("categoria nao existe");
-  const updateProduct = await Repository.updateProduct({
-    ...newProductPut,
-    category: categoryID[0].id,
-  });
+  const updateProduct = await Repository.updateProduct(
+    {
+      ...newProductPut,
+      category: categoryID[0].id,
+    },
+    id
+  );
 
   return updateProduct;
 };
