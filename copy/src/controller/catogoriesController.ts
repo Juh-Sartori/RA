@@ -1,8 +1,9 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import knex from "knex";
 import config from "../../knexfile";
 
 import productService from "../service/productService";
+import categoriesService from "../service/categoriesService";
 
 const knexInstance = knex(config);
 
@@ -11,7 +12,7 @@ type CategoriesType = {
   name: string;
 };
 
-const index = async (req: Request, res: Response) => {
+const index = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const category: CategoriesType[] = await knexInstance("categories").select(
       "name"
@@ -20,36 +21,36 @@ const index = async (req: Request, res: Response) => {
     const categoriesArray = category.map((category) => category.name);
     res.status(200).json(categoriesArray);
   } catch (error: any) {
-    res.send(error.message ? { error: error.message } : error);
+    // res.send(error.message ? { error: error.message } : error);
+    next(error);
   }
 };
 
-const show = async (req: Request, res: Response) => {
+const show = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const nameCategory = req.params.nameRouter;
-    const category = await knexInstance("product")
-      .select("*")
-      .where({ category: nameCategory });
-    if (!category.length) throw new Error("Essa categoria nao existe");
-    res.status(200).json(category);
+    const nameCategory = Number(req.params.nameRouter);
+
+    const newCategoryShow = await categoriesService.getCategory(nameCategory);
+
+    res.status(200).json(newCategoryShow);
   } catch (error: any) {
-    res.send(error.message ? { error: error.message } : error);
+    next(error);
   }
 };
 
 ///////////////refazer
-const insert = async (req: Request, res: Response) => {
+const insert = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { name } = req.body;
 
-    const newProduct = await productService.createProduct(name);
-    res.status(201).json({ id: newProduct[0], ...name });
+    const newCategory = await categoriesService.createCategory(name);
+    res.status(201).json({ id: newCategory[0], ...name });
   } catch (error: any) {
-    res.status(500).json({ error: error.message });
+    next(error);
   }
 };
 
-const update = async (req: Request, res: Response) => {
+const update = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const nameUrl: string = req.params.name;
     const nameUpdate = req.body.name;
@@ -65,11 +66,11 @@ const update = async (req: Request, res: Response) => {
 
     res.status(200).json(nameCategory);
   } catch (error: any) {
-    res.send(error.message ? { error: error.message } : error);
+    next(error);
   }
 };
 
-const remove = async (req: Request, res: Response) => {
+const remove = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const name = req.params.name;
     const category = await knexInstance("categories").delete().where({ name });
@@ -78,7 +79,7 @@ const remove = async (req: Request, res: Response) => {
 
     res.status(200).json({ msg: "Categoria deletada" });
   } catch (error: any) {
-    res.send(error.message ? { error: error.message } : error);
+    next(error);
   }
 };
 
