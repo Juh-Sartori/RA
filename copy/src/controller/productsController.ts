@@ -22,9 +22,9 @@ type Products = {
 //index: traz todas as entradas do banco
 const index = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const product: Products[] = await knexInstance("product").select("*");
     //*, para pegar todas as informacoes da coluna do BD
     //esse "product", ta acessando a tabela product
+    const product = await productService.getAllProduct();
     res.status(200).json(product);
   } catch (error: any) {
     next(error);

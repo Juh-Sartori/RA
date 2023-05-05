@@ -31,10 +31,13 @@ const showProduct = (id: number) =>
 const deletProduct = (id: number) =>
   knexInstance.delete().into("product").where({ id });
 
+const indexAllProduct = () => knexInstance.select("*").into("product");
+
 export default {
   verifyCategory,
   insertProduct,
   updateProduct,
   showProduct,
   deletProduct,
+  indexAllProduct,
 };

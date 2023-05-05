@@ -11,6 +11,13 @@ type ProductParams = {
   category?: string;
 };
 
+const getAllProduct = async () => {
+  const newProductAll: ProductParams[] = await Repository.indexAllProduct();
+
+  if (newProductAll.length === 0) throw new Error("O banco esta vazio!");
+
+  return newProductAll;
+};
 const createProduct = async (product: ProductParams) => {
   const newProduct = { ...product, ...product.rating };
   delete newProduct.rating;
@@ -71,4 +78,10 @@ const deleteProduct = async (productId: number) => {
   return newProductDelet; //quando nao tem o return o bd deleta normalmnete, porem o usuario nao ve oq foi dleetado kkk
 };
 
-export default { createProduct, putProduct, getProduct, deleteProduct };
+export default {
+  createProduct,
+  putProduct,
+  getProduct,
+  deleteProduct,
+  getAllProduct,
+};
