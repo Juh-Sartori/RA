@@ -1,7 +1,8 @@
+//tem q fazer uma validacao para cada rota/funcao
 import { NextFunction, Request, Response } from "express";
 import { object, string, number } from "yup";
 
-const UpdateDataValidation = async (
+const UpdateDataValiokdation = async (
   req: Request,
   res: Response,
   next: NextFunction

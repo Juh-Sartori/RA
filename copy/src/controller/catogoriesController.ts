@@ -41,7 +41,7 @@ const show = async (req: Request, res: Response, next: NextFunction) => {
 ///////////////refazer
 const insert = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { name } = req.body;
+    const name = req.body;
 
     const newCategory = await categoriesService.createCategory(name);
     res.status(201).json({ id: newCategory[0], ...name });
@@ -73,11 +73,11 @@ const update = async (req: Request, res: Response, next: NextFunction) => {
 const remove = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const name = req.params.name;
-    const category = await knexInstance("categories").delete().where({ name });
+    const category = await categoriesService.deleteCategory(name);
 
-    if (!category) throw new Error("Essa categoria não existe");
-
+    console.log(category);
     res.status(200).json({ msg: "Categoria deletada" });
+    //res.status(200).json(category);
   } catch (error: any) {
     next(error);
   }

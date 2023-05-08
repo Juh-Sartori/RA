@@ -28,15 +28,31 @@ const getCategory = async (id: number) => {
   return returnUser;
 };
 
+const getCategoryByName = async (name: string) => {
+  const find = await Repository.showCategoryByName(name);
+
+  return find;
+};
+
 const createCategory = async (category: CategoriesParams) => {
   const categoryID = await Repository.verifyCategory(category.name!);
   //so precisa dessa validacao quando tiver interacao com o usuario
 
-  if (categoryID.length === 0) throw new Error("categoria nao existe");
+  if (categoryID.length >= 1) throw new Error("categoria ja existe");
 
   const insertCategory = await Repository.insertCategory(category);
 
   return insertCategory;
 };
 
-export default { getAllCategory, getCategory, createCategory };
+const deleteCategory = async (categoryName: string) => {
+  const findCategory = await Repository.showCategoryByName(categoryName);
+
+  if (findCategory.length === 0) throw new Error("Categoria nao existe");
+
+  const newCategoryDelet = await Repository.deletCategory(categoryName);
+
+  return newCategoryDelet; //quando nao tem o return o bd deleta normalmnete, porem o usuario nao ve oq foi dleetado kkk
+};
+
+export default { getAllCategory, getCategory, createCategory, deleteCategory };

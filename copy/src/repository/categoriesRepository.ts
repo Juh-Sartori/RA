@@ -23,8 +23,11 @@ const insertCategory = (categories: Categories) =>
 const updateCategory = (categories: Categories, id: number) =>
   knexInstance.update(categories).into("categories").where({ id });
 
-const deletCategory = (id: number) =>
-  knexInstance.delete().into("categories").where({ id });
+const deletCategory = (name: string) =>
+  knexInstance.delete().into("categories").where({ name });
+
+const showCategoryByName = (name: string) =>
+  knexInstance.select("*").into("categories").where({ name });
 
 export default {
   verifyCategory,
@@ -33,4 +36,5 @@ export default {
   insertCategory,
   updateCategory,
   deletCategory,
+  showCategoryByName,
 };
