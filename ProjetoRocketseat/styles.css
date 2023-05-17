@@ -1,0 +1,48 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; /*ou seja respeita a borda que ja deu e nao fica mexendo*/
+}
+
+body {
+  background-color: #121215;
+  color: #eaeaea; /*aq eh a cor das letras*/
+
+  font-family: "Roboto", sans-serif;
+}
+
+nav {
+  padding: 64px;
+}
+
+.memory {
+  display: flex; /*os elementos da classe memory serao flexiveis*/
+  flex-direction: column; /*para q nao fiquwe um do lado do outro*/
+  gap: 16px; /*assim vai colocar um espaçamento entre a imagem e os textos*/
+
+  text-decoration: none; /*para tirar o sublinhado do titulo*/
+  margin-bottom: 64px; /*para poder dar um espacamento entre as informacaoes*/
+}
+
+.memory small {
+  color: #bebebf;
+  font-size: 12px;
+}
+
+.memory h1 {
+  font-size: 32px;
+  color: #eaeaea;
+}
+
+.memory img {
+  width: 100%;
+  height: 280px;
+  object-fit: cover; /*q ai acompanha quando puxar a pagina*/
+  border-radius: 8px; /*arrendondamento das bordas*/
+}
+
+.memory p {
+  font-size: 18px;
+  color: #bebebf;
+  line-height: 28px; /*espaçamento das linhas*/
+}
